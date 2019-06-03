@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database'
+import 'firebase/firestore'
 
 const config = {
     apiKey: "AIzaSyCqSedobJwkr0DAFiCZta0aYA_8kvkRTRQ",
@@ -17,7 +18,8 @@ class Firebase {
         app.initializeApp(config);
 
         this.auth = app.auth();
-        this.database = app.database();
+        this.database = app.firestore();
+        this.database.collection("testing").add({a: "aldskfjlasdkf"});
     }
 
     // *** Auth API ***
@@ -38,8 +40,8 @@ class Firebase {
     // *** Handling Posts ***
 
     createPost = post =>
-    this.database.ref("users/").set({
-            curr: post,
+    this.database.collection("committees").doc("ICPO").set({
+            currPost: post,
         });
 }
 
