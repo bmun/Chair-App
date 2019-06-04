@@ -3,10 +3,11 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
 import ReactTable from 'react-table'
+import 'react-table/react-table.css'
 
 const INITIAL_STATE = {
     content: '',
-    type: '',
+    type: 'Moderated',
     topic: '',
     del: '',
     time: '',
@@ -22,14 +23,22 @@ const INITIAL_STATE = {
 };
 
 var caucus = [{
-    type: "moderated",
+    type: "Moderated",
     topic: "Pharmaceutical Crime",
     del: "Rwanda",
     time: "5:00",
     sp_time: "1:00",
+    click: null,
 }];
 
-var caucusCols = [{Header: "Caucus Type", accessor: "type"}, {Header: "Topic", accessor: "topic"}, {Header: "Delegate Title", accessor: "delegate"}, {Header: "Total Time", accessor: "time"}, {Header: "Speaking Time", accessor: "sp_time"}];
+var caucusCols = [
+    {Header: "Caucus Type", accessor: "type"},
+    {Header: "Topic", accessor: "topic"},
+    {Header: "Delegate Title", accessor: "del"},
+    {Header: "Total Time", accessor: "time"},
+    {Header: "Speaking Time", accessor: "sp_time"},
+    {Header: "", accessor: 'click', Cell: row => (<button onClick={(e) => console.log(row["row"])}>Click Me</button>)}
+    ];
 
 const PostPage = () => (
     <div>
@@ -55,6 +64,13 @@ class PostFormBase extends Component {
         .catch(error => {
             this.setState({error})
         });
+        this.setState({
+            type: 'Moderated',
+            topic: '',
+            del: '',
+            time: '',
+            sp_time: '',
+        });
         event.preventDefault();
     };
 
@@ -70,12 +86,13 @@ class PostFormBase extends Component {
             topic: topic,
             del: del,
             time: time,
-            sp_time: sp_time
+            sp_time: sp_time,
+            click: null
         });
 
 
 
-        this.setState({content: "this being sent, but not working", data: that});
+        this.setState({data: that});
 
 
         event.preventDefault();
@@ -101,9 +118,9 @@ class PostFormBase extends Component {
 
             <form onSubmit={this.broadcast}>
                 <select name="type" value={type} onChange={this.onChange}>
-                    <option value="moderated">Mod</option>
-                    <option value="unmoderated">Unmod</option>
-                    <option value="formal">Formal</option>
+                    <option value="Moderated">Mod</option>
+                    <option value="Unmoderated">Unmod</option>
+                    <option value="Formal">Formal</option>
                 </select>
                 <input
                     name="topic"
@@ -136,7 +153,11 @@ class PostFormBase extends Component {
                 <button disabled={isInvalid2} type="submit"> Broadcast </button>
             </form>
                 <div>
-            <ReactTable data={data} columns={caucusCols}/>
+            <ReactTable data={data}
+                        columns={caucusCols}
+                        showPageSizeOptions={false}
+                        defaultPageSize={5}
+                        showPageJump={false}/>
                 </div>
             </div>
         );
