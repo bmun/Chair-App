@@ -1,11 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import '../Navigation/index.css'
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
+import { AuthUserContext } from '../Session';
 
-const Navigation = ({ authUser }) => (
-    <div>{authUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>
+const Navigation = () => (
+    <div>
+        <header>
+            <img src="https://cdn3.iconfinder.com/data/icons/eldorado-stroke-devices/40/radio-512.png"/>
+                <AuthUserContext.Consumer>
+                    {authUser =>
+                        authUser ? <NavigationAuth /> : <NavigationNonAuth />
+                    }
+                </AuthUserContext.Consumer>
+        </header>
+    </div>
 );
 
 const NavigationAuth = () => (

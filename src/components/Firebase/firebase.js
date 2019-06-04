@@ -1,6 +1,7 @@
 import app from 'firebase/app'
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/database';
 import * as DBCONFIG from '../../constants/dbconfig'
 
 
@@ -19,11 +20,16 @@ class Firebase {
         app.initializeApp(config);
 
         this.auth = app.auth();
-        this.db = app.firestore();
+        this.database = app.firestore();
+        this.db = app.database();
     }
 
-    doCreateUserWithEmailAndPassword = (email, password) =>
-        this.auth.createUserWithEmailAndPassword(email, password);
+    doCreateUserWithEmailAndPassword = (email, password) => {
+        let a = this.auth.createUserWithEmailAndPassword(email, password);
+        return a};
+
+    doSetUsername = (username) =>
+        this.auth.currentUser.updateProfile({displayName: username});
 
     doSignInWithEmailAndPassword = (email, password) =>
         this.auth.signInWithEmailAndPassword(email, password);
@@ -38,11 +44,31 @@ class Firebase {
 
     // POST API
 
-    createPost = content =>
-        this.db.collection("committees").doc("ICPO").set({
+    createPost = (committee, content) =>
+        this.database.collection(committee).doc("billboard").set({
             currPost:  content
+        });
+
+    getPost = committee =>
+        this.database.collection(committee).doc("billboard").get();
+
+    setTable = (committee, type, data) =>
+        this.database.collection(committee).doc(type).set({
+            table: data
         })
+
+    getTable = (committee, type) =>
+        this.database.collection(committee).doc(type).get()
+
+
+
+    // *** User API ***
+
+    user = uid => this.db.ref(`users/${uid}`);
+
+    users = () => this.db.ref('users');
 }
+
 
 export default Firebase;
 

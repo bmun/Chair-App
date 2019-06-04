@@ -4,6 +4,10 @@ import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
+import './index.css'
+import {withAuthorization} from "../Session";
+
+
 
 const INITIAL_STATE = {
     content: '',
@@ -12,33 +16,11 @@ const INITIAL_STATE = {
     del: '',
     time: '',
     sp_time: '',
-    data: [{
-        type: "moderated",
-        topic: "Pharmaceutical Crime",
-        del: "Rwanda",
-        time: "5:00",
-        sp_time: "1:00",
-    }],
+    data: [],
     error: null,
 };
 
-var caucus = [{
-    type: "Moderated",
-    topic: "Pharmaceutical Crime",
-    del: "Rwanda",
-    time: "5:00",
-    sp_time: "1:00",
-    click: null,
-}];
 
-var caucusCols = [
-    {Header: "Caucus Type", accessor: "type"},
-    {Header: "Topic", accessor: "topic"},
-    {Header: "Delegate Title", accessor: "del"},
-    {Header: "Total Time", accessor: "time"},
-    {Header: "Speaking Time", accessor: "sp_time"},
-    {Header: "", accessor: 'click', Cell: row => (<button onClick={(e) => console.log(row["row"])}>Click Me</button>)}
-    ];
 
 const PostPage = () => (
     <div>
@@ -52,25 +34,48 @@ const PostPage = () => (
 class PostFormBase extends Component {
     constructor(props) {
         super(props);
-
         this.state = { ...INITIAL_STATE};
+        let that = this;
+        this.props.firebase.user(this.props.firebase.auth.currentUser.uid)
+            .once('value').then(function(snapshot) {
+                that.committee = snapshot.val()["username"];
+        });
+        let thong = this;
+        this.caucusCols = [
+            {Header: "Caucus Type", accessor: "type"},
+            {Header: "Topic", accessor: "topic"},
+            {Header: "Delegate Title", accessor: "del"},
+            {Header: "Total Time", accessor: "time"},
+            {Header: "Speaking Time", accessor: "sp_time"},
+            {Header: "Submit", accessor: 'click', Cell: row => (
+                    <button onClick={(e) => {
+                        console.log(row);
+                        let myRow = row["row"];
+                        thong.state.data.splice(myRow["_index"], 1);
+                        let that = thong.state.data;
+                        thong.setState({data: that});
+                        thong.props.firebase
+                            .setTable(thong.committee, "caucus", that)
+                            .then(() => {thong.refreshData("nice")})
+                            .catch(error => {
+                                thong.setState({error})
+                            });
+
+                    }}>
+                        Send to Docket
+                    </button>)}
+        ];
     }
 
     onSubmit = event => {
         const {content} = this.state;
 
         this.props.firebase
-            .createPost(content)
+            .createPost(this.committee, content)
         .catch(error => {
             this.setState({error})
         });
-        this.setState({
-            type: 'Moderated',
-            topic: '',
-            del: '',
-            time: '',
-            sp_time: '',
-        });
+
         event.preventDefault();
     };
 
@@ -78,7 +83,40 @@ class PostFormBase extends Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
-    broadcast = event => {
+    clearCaucus = event => {
+        this.setState({data: []});
+        let that = [];
+        this.props.firebase
+            .setTable(this.committee, "caucus", that)
+            .catch(error => {
+                this.setState({error})
+            });
+
+        this.setState({
+            type: 'Moderated',
+            topic: '',
+            del: '',
+            time: '',
+            sp_time: '',
+            data: that
+        });
+    };
+
+    refreshData = event => {
+        let that = this;
+        this.props.firebase
+            .getPost(this.committee).then(function(doc) {
+                that.setState({content: doc.data()["currPost"]})
+        })
+
+        this.props.firebase
+            .getTable(this.committee, "caucus")
+            .then(function(doc) {
+                that.setState({data: doc.data()["table"]})
+            })
+    };
+
+    broadcastCaucus = event => {
         const {content, type, topic, del, time, sp_time, data, error} = this.state;
         let that = [ ...this.state.data ];
         that.push({
@@ -90,33 +128,42 @@ class PostFormBase extends Component {
             click: null
         });
 
+        this.props.firebase
+            .setTable(this.committee, "caucus", that)
+        .catch(error => {
+            this.setState({error})
+        });
 
-
-        this.setState({data: that});
-
+        this.setState({
+            type: 'Moderated',
+            topic: '',
+            del: '',
+            time: '',
+            sp_time: '',
+            data: that
+        });
 
         event.preventDefault();
     };
 
     render() {
         const {content, type, topic, del, time, sp_time, data, error} = this.state;
-        const isInvalid = content === '';
         const isInvalid2 = topic === '' || del === '' || time === '' || sp_time === '';
         return (
-            <div>
+            <div className="container">
             <form onSubmit={this.onSubmit}>
                 <textarea name="content"
                        value={content}
                        onChange={this.onChange}
                        placeholder="StuffHere"
                        />
-                <button disabled={isInvalid} type="submit">
+                <button type="submit">
                     Post
                 </button>
                 {error && <p>{error.message}</p>}
             </form>
 
-            <form onSubmit={this.broadcast}>
+            <form onSubmit={this.broadcastCaucus}>
                 <select name="type" value={type} onChange={this.onChange}>
                     <option value="Moderated">Mod</option>
                     <option value="Unmoderated">Unmod</option>
@@ -152,23 +199,26 @@ class PostFormBase extends Component {
 
                 <button disabled={isInvalid2} type="submit"> Broadcast </button>
             </form>
-                <div>
             <ReactTable data={data}
-                        columns={caucusCols}
+                        columns={this.caucusCols}
                         showPageSizeOptions={false}
                         defaultPageSize={5}
-                        showPageJump={false}/>
-                </div>
+                        showPageJump={false}
+                        sortable={false}
+                        resizable={false}/>
+                <button onClick={this.clearCaucus}> Clear Caucus </button>
+                <button onClick={this.refreshData}> Refresh Local Screen </button>
             </div>
         );
     }
 }
+const condition = authUser => !!authUser;
 
 const PostForm = compose(
     withRouter,
     withFirebase
 )(PostFormBase);
 
-export default PostPage;
+export default withAuthorization(condition)(PostPage);
 
 export {PostForm}
