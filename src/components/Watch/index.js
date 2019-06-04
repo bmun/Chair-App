@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
 
+import ReactMarkdown from 'react-markdown'
+
 
 const WatchPage = () => (
     <div>
@@ -21,17 +23,16 @@ class WatchBoxBase extends Component {
 
 
     initListener = () => {
-        this.setState({content: "hello world!"});
-        const watchRef = this.props.firebase.database.ref("users/");
+        const db = this.props.firebase.database;
         let that = this;
 
         function update(v) {
-            that.setState({content: v["curr"]})
+            that.setState({content: v["currPost"]})
         }
-
-        watchRef.on('value', function (snapshot) {
-            update(snapshot.val());
-        });
+        db.collection("committees").doc("ICPO")
+            .onSnapshot(function(doc) {
+                update(doc.data())
+            });
     };
 
 
@@ -40,9 +41,7 @@ class WatchBoxBase extends Component {
 
         return (
             <div>
-                <p>
-                    {content}
-                </p>
+                <ReactMarkdown source={content} />
                 <button onClick={this.initListener}> Listen </button>
             </div>
 
