@@ -3,13 +3,13 @@ import 'firebase/auth';
 import 'firebase/database'
 
 const config = {
-    apiKey: "AIzaSyCqSedobJwkr0DAFiCZta0aYA_8kvkRTRQ",
-    authDomain: "my-auth-a0e06.firebaseapp.com",
-    databaseURL: "https://my-auth-a0e06.firebaseio.com/",
-    projectId: "my-auth-a0e06",
-    storageBucket: 'my-auth-a0e06.appspot.com',
-    messagingSenderId: "786823056667",
-    appId: "1:786823056667:web:e08c9c298ae47ba6"
+    apiKey: BLEEP,
+    authDomain: BLEEP,
+    databaseURL: BLEEP,
+    projectId: BLEEP,
+    storageBucket: BLEEP,
+    messagingSenderId: BLEEP,
+    appId: BLEEP
 };
 
 class Firebase {
