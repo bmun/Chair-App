@@ -64,7 +64,7 @@ class PostFormBase extends Component {
 
     broadcast = event => {
         const {content, type, topic, del, time, sp_time, data, error} = this.state;
-        let that = data;
+        let that = [ ...this.state.data ];
         that.push({
             type: type,
             topic: topic,
@@ -74,7 +74,8 @@ class PostFormBase extends Component {
         });
 
 
-        this.setState({data: that});
+
+        this.setState({content: "this being sent, but not working", data: that});
 
 
         event.preventDefault();
@@ -99,7 +100,7 @@ class PostFormBase extends Component {
             </form>
 
             <form onSubmit={this.broadcast}>
-                <select value={type} onChange={this.onChange}>
+                <select name="type" value={type} onChange={this.onChange}>
                     <option value="moderated">Mod</option>
                     <option value="unmoderated">Unmod</option>
                     <option value="formal">Formal</option>
@@ -134,7 +135,9 @@ class PostFormBase extends Component {
 
                 <button disabled={isInvalid2} type="submit"> Broadcast </button>
             </form>
+                <div>
             <ReactTable data={data} columns={caucusCols}/>
+                </div>
             </div>
         );
     }
