@@ -1,6 +1,11 @@
-#Radio
+
+# Radio
+
 A web app to chair Model United Nations Committees
-##Setup
+
+## Setup
+
+
 1. Fork, clone, and navigate to this repository
 2. You will need to create `src/constants/dbconfig.js`. The file should be of the form:
     ```
