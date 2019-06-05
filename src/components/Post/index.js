@@ -106,13 +106,17 @@ class PostFormBase extends Component {
         let that = this;
         this.props.firebase
             .getPost(this.committee).then(function(doc) {
-                that.setState({content: doc.data()["currPost"]})
+                if (doc.exists) {
+                    that.setState({content: doc.data()["currPost"]})
+                }
         })
 
         this.props.firebase
             .getTable(this.committee, "caucus")
             .then(function(doc) {
-                that.setState({data: doc.data()["table"]})
+                if (doc.exists) {
+                    that.setState({data: doc.data()["table"]})
+                }
             })
     };
 

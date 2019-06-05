@@ -55,18 +55,19 @@ class WatchBoxBase extends Component {
         const db = this.props.firebase.database;
         let that = this;
         this.setState({listening: true});
-        function update(v) {
-            that.setState({content: v["currPost"]})
-        }
 
         db.collection(channel).doc("billboard")
             .onSnapshot(function(doc) {
-                update(doc.data())
+                if (doc.exists) {
+                    that.setState({content: doc.data()["currPost"]})
+                }
             });
 
         db.collection(channel).doc("caucus")
            .onSnapshot( function(doc) {
-               that.setState({caucus: doc.data()["table"]})
+               if (doc.exists) {
+                   that.setState({caucus: doc.data()["table"]})
+               }
            })
     };
 
