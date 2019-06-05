@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a4d52efc-f6cf-4851-b102-508d597213f8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CONTRIBUTING.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SignUp/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SignUp/index.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -29,11 +29,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/SignUp/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="443">
-              <caret line="48" column="31" lean-forward="true" selection-start-line="48" selection-start-column="31" selection-end-line="48" selection-end-column="31" />
+              <caret line="120" column="55" selection-start-line="120" selection-start-column="55" selection-end-line="120" selection-end-column="55" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -53,12 +53,12 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="240">
-                <caret line="16" column="68" selection-start-line="16" selection-start-column="68" selection-end-line="16" selection-end-column="68" />
+              <first_editor relative-caret-position="45">
+                <caret line="3" column="52" selection-start-line="3" selection-start-column="52" selection-end-line="3" selection-end-column="52" />
               </first_editor>
               <second_editor />
             </state>
@@ -70,18 +70,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="15">
               <caret line="1" selection-end-line="6" selection-end-column="58" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CONTRIBUTING.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="30">
-                <caret line="2" selection-start-line="2" selection-end-line="2" />
-              </first_editor>
-              <second_editor />
             </state>
           </provider>
         </entry>
@@ -161,6 +149,7 @@
       <find>initListener</find>
       <find>db</find>
       <find>console</find>
+      <find>withauthorization</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -201,7 +190,6 @@
         <option value="$PROJECT_DIR$/src/components/App/index.js" />
         <option value="$PROJECT_DIR$/src/components/Session/index.js" />
         <option value="$PROJECT_DIR$/src/components/Session/withAuthorization.js" />
-        <option value="$PROJECT_DIR$/src/components/SignUp/index.js" />
         <option value="$PROJECT_DIR$/src/components/Watch/index.css" />
         <option value="$PROJECT_DIR$/src/components/Watch/index.js" />
         <option value="$PROJECT_DIR$/src/components/Post/index.css" />
@@ -209,6 +197,7 @@
         <option value="$PROJECT_DIR$/src/components/Post/index.js" />
         <option value="$PROJECT_DIR$/CONTRIBUTING.md" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/components/SignUp/index.js" />
       </list>
     </option>
   </component>
@@ -371,7 +360,7 @@
       <option name="presentableId" value="Default" />
       <updated>1559325744676</updated>
       <workItem from="1559325745873" duration="20634000" />
-      <workItem from="1559666528332" duration="19636000" />
+      <workItem from="1559666528332" duration="20141000" />
     </task>
     <task id="LOCAL-00001" summary="Working Bulletin">
       <created>1559590514454</created>
@@ -401,11 +390,25 @@
       <option name="project" value="LOCAL" />
       <updated>1559689971798</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Updated README">
+      <created>1559757604130</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1559757604130</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fixed README again">
+      <created>1559757802960</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1559757802960</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40270000" />
+    <option name="totallyTimeSpent" value="40775000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -422,11 +425,11 @@
     <layout>
       <window_info id="Favorites" order="0" sideWeight="0.5018182" side_tool="true" weight="0.24945612" />
       <window_info id="npm" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" sideWeight="0.49818182" visible="true" weight="0.24929577" />
+      <window_info content_ui="combo" id="Project" order="2" sideWeight="0.49818182" visible="true" weight="0.24929577" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.3292683" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5007042" side_tool="true" weight="0.3292683" />
-      <window_info anchor="bottom" id="Version Control" order="2" sideWeight="0.49929577" visible="true" weight="0.3292683" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="2" sideWeight="0.49929577" visible="true" weight="0.3292683" />
       <window_info anchor="bottom" id="Messages" order="3" weight="0.3292683" />
       <window_info anchor="bottom" id="Docker" order="4" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="5" />
@@ -470,7 +473,9 @@
     <MESSAGE value="broken table" />
     <MESSAGE value="Table Fixed" />
     <MESSAGE value="Did a Whole Bunch&#10;&#10;+ added authorization and authentication HOF's&#10;+ Implemented multiple channels using real-time database&#10;+ Made NavBar more aesthetically pleasing (some other css stuff too)&#10;+ Added Utilities (Clear, Refresh) to Post Page&#10;+ Implemented Caucus table in Watch tab" />
-    <option name="LAST_COMMIT_MESSAGE" value="Did a Whole Bunch&#10;&#10;+ added authorization and authentication HOF's&#10;+ Implemented multiple channels using real-time database&#10;+ Made NavBar more aesthetically pleasing (some other css stuff too)&#10;+ Added Utilities (Clear, Refresh) to Post Page&#10;+ Implemented Caucus table in Watch tab" />
+    <MESSAGE value="Updated README" />
+    <MESSAGE value="fixed README again" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed README again" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -719,16 +724,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/SignUp/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
-          <caret line="48" column="31" lean-forward="true" selection-start-line="48" selection-start-column="31" selection-end-line="48" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Watch/index.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -790,10 +785,20 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="240">
-            <caret line="16" column="68" selection-start-line="16" selection-start-column="68" selection-end-line="16" selection-end-column="68" />
+          <first_editor relative-caret-position="45">
+            <caret line="3" column="52" selection-start-line="3" selection-start-column="52" selection-end-line="3" selection-end-column="52" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/SignUp/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="443">
+          <caret line="120" column="55" selection-start-line="120" selection-start-column="55" selection-end-line="120" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

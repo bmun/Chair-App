@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import {withAuthorization} from "../Session";
 
 const SignUpPage = () => (
     <div>
@@ -113,6 +114,9 @@ const SignUpLink = () => (
         Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
     </p>
 );
+const condition = authUser => !!authUser;
+
+
 const SignUpForm = withRouter(withFirebase(SignUpFormBase));
-export default SignUpPage;
+export default withAuthorization(condition)(SignUpPage);
 export { SignUpForm, SignUpLink };

@@ -1,7 +1,7 @@
 
 # Radio
 
-A web app to chair Model United Nations Committees
+A web app to chair Model United Nations conferences.
 
 ## Setup
 
