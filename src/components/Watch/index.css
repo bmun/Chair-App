@@ -1,6 +1,6 @@
 h2 {
     font-family: "Verdana";
-    color: #9C0;
+    color: rgba(0, 0, 0, 0.98);
 }
 
 .container > * {
