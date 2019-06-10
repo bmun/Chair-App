@@ -6,6 +6,7 @@ import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import './index.css'
 import ReactMarkdown from 'react-markdown'
+import CaucusView from "../Post/caucus";
 
 const WatchPage = () => (
     <div>
@@ -32,6 +33,7 @@ class WatchBoxBase extends Component {
             channel: "",
             channelList: [],
             listening: false,
+            currCaucus: {}
         };
         this.c_list = [];
         let that = this;
@@ -51,7 +53,6 @@ class WatchBoxBase extends Component {
 
     initListener = () => {
         const {content, caucus, channel, channelList, listening} = this.state;
-        console.log(channel);
         const db = this.props.firebase.database;
         let that = this;
         this.setState({listening: true});
@@ -69,6 +70,14 @@ class WatchBoxBase extends Component {
                    that.setState({caucus: doc.data()["table"]})
                }
            })
+
+        db.collection(channel).doc("currCaucus")
+            .onSnapshot(function(doc) {
+                if (doc.exists) {
+                    that.setState({currCaucus: doc.data()["table"]});
+                    console.log(doc.data());
+                }
+            });
     };
 
     onChange = event => {
@@ -76,7 +85,7 @@ class WatchBoxBase extends Component {
     };
 
     render() {
-        const {content, caucus, channel, channelList, listening} = this.state;
+        const {content, caucus, channel, channelList, listening, currCaucus} = this.state;
 
         return (
             <div>
@@ -85,7 +94,9 @@ class WatchBoxBase extends Component {
                             columns={caucusCols}
                             showPageSizeOptions={false}
                             defaultPageSize={5}
-                            showPageJump={false}/></div>}
+                            showPageJump={false}/>
+                <CaucusView caucus={currCaucus}/>
+                </div>}
                 {!listening && <div>
                     <select name="channel" value={channel} onChange={this.onChange}>
                         <option value="">

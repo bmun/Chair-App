@@ -7,7 +7,7 @@ import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 import PasswordForgetPage from '../PasswordForget';
 import HomePage from '../Home';
-import AccountPage from '../Account';
+import GradingPage from '../Grading';
 import AdminPage from '../Admin';
 import PostPage from '../Post';
 import { AuthUserContext } from '../Session';
@@ -36,8 +36,8 @@ const App = () => (
                     <Route exact path={ROUTES.HOME} component={HomePage} />
                     <Route
                         exact
-                        path={ROUTES.ACCOUNT}
-                        component={AccountPage}
+                        path={ROUTES.GRADING}
+                        component={GradingPage}
                     />
                     <Route exact path={ROUTES.ADMIN} component={AdminPage} />
                     <Route exact path={ROUTES.POST} component={PostPage} />

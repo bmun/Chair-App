@@ -42,6 +42,7 @@ class PostFormBase extends Component {
         this.props.firebase.user(this.props.firebase.auth.currentUser.uid)
             .once('value').then(function(snapshot) {
                 that.committee = snapshot.val()["username"];
+                that.refreshData(null)
         });
         let thong = this;
         this.caucusCols = [
@@ -71,7 +72,12 @@ class PostFormBase extends Component {
                             rem: Times[myRow["time"]] / SpeakingTimes[myRow["sp_time"]],
                         };
                         thong.setState({currentCaucus: newCaucus});
-
+                        thong.props.firebase
+                            .setTable(thong.committee, "currCaucus", newCaucus)
+                            .then(() => {thong.refreshData("nice")})
+                            .catch(error => {
+                                thong.setState({error})
+                            });
                     }}>
                         Pass
                     </button>
@@ -109,7 +115,6 @@ class PostFormBase extends Component {
         if (event.target.name === "sp_time") sp_time = event.target.value;
         if (Times[time] % SpeakingTimes[sp_time] !== 0) {
             this.setState({error: "Speaking Time does not divide time evenly!"});
-            console.log(time, sp_time);
         } else {
             this.setState({error: null});
         }
@@ -143,7 +148,15 @@ class PostFormBase extends Component {
                 if (doc.exists) {
                     that.setState({data: doc.data()["table"]})
                 }
-            })
+            });
+
+        this.props.firebase
+            .getTable(this.committee, "currCaucus")
+            .then(function(doc) {
+                if (doc.exists) {
+                    that.setState({currentCaucus: doc.data()["table"]})
+                }
+            });
     };
 
     broadcastCaucus = event => {
@@ -198,7 +211,7 @@ class PostFormBase extends Component {
             },
             timerVal: SpeakingTimes[currentCaucus["sp_time"]] * 1000,
         })
-    }
+    };
 
     render() {
         const {content, type, topic, del, time, sp_time, data, currentCaucus, timerVal, error} = this.state;
@@ -244,14 +257,14 @@ class PostFormBase extends Component {
                     value={time}
                     onChange={this.onChange}>
 
-                    {Object.keys(Times).map((key, index) => (<option value={key}>{key}</option>))}
+                    {Object.keys(Times).map((key, index) => (<option value={key} key={key}>{key}</option>))}
                 </select>
 
                 <select
                     name="sp_time"
                     value={sp_time}
                     onChange={this.onChange}>
-                    {Object.keys(SpeakingTimes).map((key, index) => (<option value={key}>{key}</option>))}
+                    {Object.keys(SpeakingTimes).map((key, index) => (<option value={key}key={key}>{key}</option>))}
                 </select>
 
                 <button disabled={isInvalid2} type="submit"> Broadcast </button>

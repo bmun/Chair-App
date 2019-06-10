@@ -55,7 +55,7 @@ class Firebase {
     setTable = (committee, type, data) =>
         this.database.collection(committee).doc(type).set({
             table: data
-        })
+        });
 
     getTable = (committee, type) =>
         this.database.collection(committee).doc(type).get()
@@ -67,6 +67,12 @@ class Firebase {
     user = uid => this.db.ref(`users/${uid}`);
 
     users = () => this.db.ref('users');
+
+    setDelegates = (committee, list) => {
+            this.database.collection(committee).doc("delegates").set({
+                delegates: list
+            })
+    }
 }
 
 
