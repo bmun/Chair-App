@@ -4,11 +4,12 @@ import '../Navigation/index.css'
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
 import {AuthUserContext, withAuthorization} from '../Session';
+import {Navbar, Nav} from "react-bootstrap";
 
 const Navigation = () => (
     <div>
         <header>
-            <img src="https://cdn3.iconfinder.com/data/icons/eldorado-stroke-devices/40/radio-512.png"/>
+            {/*<img src="https://cdn3.iconfinder.com/data/icons/eldorado-stroke-devices/40/radio-512.png"/>*/}
             <AuthUserContext.Consumer>
                 {authUser => {
                     return (authUser ? <NavigationAuth/> : <NavigationNonAuth/>);
@@ -17,34 +18,30 @@ const Navigation = () => (
             </AuthUserContext.Consumer>
         </header>
     </div>
-)
+);
 
 class NavigationAuthBase extends Component {
 
     render() {
         return (
+                <Navbar expand="lg" bg="light">
+                    <Navbar.Brand href={ROUTES.LANDING}>Radio</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto">
+                            <Nav.Link href={ROUTES.LANDING}>Landing</Nav.Link>
+                            <Nav.Link href={ROUTES.HOME}>Home</Nav.Link>
+                            <Nav.Link href={ROUTES.GRADING}>Grading</Nav.Link>
+                            <Nav.Link href={ROUTES.POST}>Post</Nav.Link>
+                            <Nav.Link href={ROUTES.WATCH}>Watch</Nav.Link>
+                        </Nav>
+                        <span className="my-2 my-lg-0">
+                            <span className="navbar-text"> Welcome, {this.props.committee}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <SignOutButton/>
+                        </span>
+                    </Navbar.Collapse>
+                </Navbar>
 
-            <div>
-                <ul>
-                    <li>
-                        <Link to={ROUTES.LANDING}>Landing</Link>
-                    </li>
-                    <li>
-                        <Link to={ROUTES.HOME}>Home</Link>
-                    </li>
-                    <li>
-                        <Link to={ROUTES.GRADING}>Grading</Link>
-                    </li>
-                    <li>
-                        <Link to={ROUTES.POST}>Post</Link>
-                    </li>
-                    <li>
-                        <Link to={ROUTES.WATCH}>Watch</Link>
-                    </li>
-                </ul>
-                <p> Welcome, {this.props.committee} </p>
-                <SignOutButton/>
-            </div>
         );
     }
 }
@@ -52,17 +49,18 @@ class NavigationAuthBase extends Component {
 
 
 const NavigationNonAuth = () => (
-    <ul>
-        <li>
-            <Link to={ROUTES.LANDING}>Landing</Link>
-        </li>
-        <li>
-            <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-        </li>
-        <li>
-            <Link to={ROUTES.WATCH}>Watch</Link>
-        </li>
-    </ul>
+
+        <Navbar bg="light" expand="lg">
+            <Navbar.Brand href={ROUTES.LANDING}>Radio</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                    <Nav.Link href={ROUTES.LANDING}>Landing</Nav.Link>
+                    <Nav.Link href={ROUTES.SIGN_IN}>Sign In</Nav.Link>
+                    <Nav.Link href={ROUTES.WATCH}>Watch</Nav.Link>
+                </Nav>
+            </Navbar.Collapse>
+        </Navbar>
 );
 
 const condition = authUser => !!authUser;

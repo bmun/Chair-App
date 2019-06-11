@@ -15,6 +15,7 @@ import * as ROUTES from '../../constants/routes';
 import { withFirebase } from '../Firebase';
 import WatchPage from "../Watch";
 import { withAuthentication } from '../Session';
+import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => (
             <Router>

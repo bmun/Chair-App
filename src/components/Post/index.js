@@ -200,6 +200,7 @@ class PostFormBase extends Component {
 
     takeSpeech = () => {
         const {currentCaucus} = this.state;
+        
         this.setState({
             currentCaucus: {
                 type: currentCaucus["type"],
@@ -217,19 +218,24 @@ class PostFormBase extends Component {
         const {content, type, topic, del, time, sp_time, data, currentCaucus, timerVal, error} = this.state;
         const isInvalid2 = topic === '' || del === '' || time === '' || sp_time === '';
         return (
-            <div>
-                <div className="container">
-            <form onSubmit={this.onSubmit}>
-                <textarea name="content"
-                       value={content}
-                       onChange={this.onChange}
-                       placeholder="StuffHere"
-                       />
-                <button type="submit">
-                    Post
-                </button>
-                {error && <p>{error}</p>}
-            </form>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-6">
+                        <form onSubmit={this.onSubmit}>
+                            <textarea name="content"
+                                   value={content}
+                                   onChange={this.onChange}
+                                   placeholder="StuffHere"
+                                      className="form-controlq"
+                                   />
+                            <button type="submit">
+                                Post
+                            </button>
+                            {error && <p>{error}</p>}
+                        </form>
+                    </div>
+                    <div className="col-md-6">
+                    </div>
                 </div>
                 <br/>
             <form onSubmit={this.broadcastCaucus}>
@@ -283,18 +289,18 @@ class PostFormBase extends Component {
                 <button onClick={this.clearCaucus}> Clear Caucus </button>
                 <button onClick={this.refreshData}> Refresh Local Screen </button>
                 {error && <p>{error.message}</p>}
+                    <h4>Current Caucus:</h4>
+                    <div className="container">
+                        <p>Speeches Remaining: {currentCaucus.rem} </p> &emsp;
+                        <button onClick={this.takeSpeech}> Take Speech</button> &emsp;
+                        <Countdown date={Date.now() + timerVal} now={() => Date.now()}/>
+                    </div>
+                    <p>Speaking Time: {currentCaucus.sp_time}</p>
+                    <p>Total Time: {currentCaucus.time}</p>
+                    <p> Type: {currentCaucus.type} </p>
+                    <p>Topic: {currentCaucus.topic}</p>
+                    <p>Delegate: {currentCaucus.del}</p>
             </div>
-                <h2>Current Caucus:</h2>
-                <div className="container">
-                <h4>Speeches Remaining: {currentCaucus.rem}</h4>
-                    <button onClick={this.takeSpeech}> Take Speech</button>
-                    <Countdown date={Date.now() + timerVal}/>
-                </div>
-                <h4>Speaking Time: {currentCaucus.sp_time}</h4>
-                <h4>Total Time: {currentCaucus.time}</h4>
-                <h4> Type: {currentCaucus.type} </h4>
-                <h4>Topic: {currentCaucus.topic}</h4>
-                <h4>Delegate: {currentCaucus.del}</h4>
             </div>
         );
     }

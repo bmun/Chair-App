@@ -69,9 +69,11 @@ class Firebase {
     users = () => this.db.ref('users');
 
     setDelegates = (committee, list) => {
-            this.database.collection(committee).doc("delegates").set({
-                delegates: list
+        for (let i = 0; i < list.length; i++) {
+            this.database.collection(committee).doc("delegates").collection("delegates").doc(list[i]).set({
+                valid: true
             })
+        }
     }
 }
 
