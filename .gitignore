@@ -24,3 +24,5 @@ yarn-error.log*
 
 /src/constants/dbconfig.js
 /.idea/workspace.xml
+
+.idea/workspace.xml
