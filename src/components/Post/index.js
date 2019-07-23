@@ -200,18 +200,20 @@ class PostFormBase extends Component {
 
     takeSpeech = () => {
         const {currentCaucus} = this.state;
-        
-        this.setState({
-            currentCaucus: {
-                type: currentCaucus["type"],
-                topic: currentCaucus["topic"],
-                del: currentCaucus["del"],
-                time: currentCaucus["time"],
-                sp_time: currentCaucus["sp_time"],
-                rem: currentCaucus["rem"] - 1,
-            },
-            timerVal: SpeakingTimes[currentCaucus["sp_time"]] * 1000,
-        })
+        if (currentCaucus["rem"] % 1 !== 0) {this.setState({error: "Error: invalid moderated caucus"}); return;}
+        if (currentCaucus["rem"] !== 0) {
+            this.setState({
+                currentCaucus: {
+                    type: currentCaucus["type"],
+                    topic: currentCaucus["topic"],
+                    del: currentCaucus["del"],
+                    time: currentCaucus["time"],
+                    sp_time: currentCaucus["sp_time"],
+                    rem: currentCaucus["rem"] - 1,
+                },
+                timerVal: SpeakingTimes[currentCaucus["sp_time"]] * 1000,
+            })
+        }
     };
 
     render() {
@@ -219,6 +221,7 @@ class PostFormBase extends Component {
         const isInvalid2 = topic === '' || del === '' || time === '' || sp_time === '';
         return (
             <div className="container-fluid">
+                {error && <p>{error}</p>}
                 <div className="row">
                     <div className="col-md-6">
                         <form onSubmit={this.onSubmit}>
@@ -231,13 +234,24 @@ class PostFormBase extends Component {
                             <button type="submit">
                                 Post
                             </button>
-                            {error && <p>{error}</p>}
                         </form>
                     </div>
                     <div className="col-md-6">
+                        <h4>Current Caucus:</h4>
+                        <div className="row">
+                            <p>Speeches Remaining: {currentCaucus.rem} </p> &emsp;
+                            <button onClick={this.takeSpeech}> Take Speech</button> &emsp;
+                            <Countdown date={Date.now() + timerVal}/>
+                        </div>
+                        <p>Speaking Time: {currentCaucus.sp_time}</p>
+                        <p>Total Time: {currentCaucus.time}</p>
+                        <p> Type: {currentCaucus.type} </p>
+                        <p>Topic: {currentCaucus.topic}</p>
+                        <p>Delegate: {currentCaucus.del}</p>
                     </div>
                 </div>
                 <br/>
+                <div className="row">
             <form onSubmit={this.broadcastCaucus}>
                 <select name="type" value={type} onChange={this.onChange}>
                     <option value="Moderated">Mod</option>
@@ -275,8 +289,9 @@ class PostFormBase extends Component {
 
                 <button disabled={isInvalid2} type="submit"> Broadcast </button>
             </form>
+                </div>
                     <br/>
-                <div className="container">
+                <div className="row">
 
                 <ReactTable data={data}
                         columns={this.caucusCols}
@@ -288,18 +303,6 @@ class PostFormBase extends Component {
                         resizable={false}/>
                 <button onClick={this.clearCaucus}> Clear Caucus </button>
                 <button onClick={this.refreshData}> Refresh Local Screen </button>
-                {error && <p>{error.message}</p>}
-                    <h4>Current Caucus:</h4>
-                    <div className="container">
-                        <p>Speeches Remaining: {currentCaucus.rem} </p> &emsp;
-                        <button onClick={this.takeSpeech}> Take Speech</button> &emsp;
-                        <Countdown date={Date.now() + timerVal} now={() => Date.now()}/>
-                    </div>
-                    <p>Speaking Time: {currentCaucus.sp_time}</p>
-                    <p>Total Time: {currentCaucus.time}</p>
-                    <p> Type: {currentCaucus.type} </p>
-                    <p>Topic: {currentCaucus.topic}</p>
-                    <p>Delegate: {currentCaucus.del}</p>
             </div>
             </div>
         );

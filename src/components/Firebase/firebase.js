@@ -71,10 +71,20 @@ class Firebase {
     setDelegates = (committee, list) => {
         for (let i = 0; i < list.length; i++) {
             this.database.collection(committee).doc("delegates").collection("delegates").doc(list[i]).set({
-                valid: true
+                name: list[i]
             })
         }
     }
+
+    // *** Grading API
+
+    getDelegates = (committee) =>
+        this.database.collection(committee).doc("delegates").collection("delegates").get();
+
+    submitFeedback = (committee, delegate, feedback) => this.database.collection(committee).doc("delegates").collection("feedback").add({
+        delegate: delegate,
+        feedback: feedback
+    })
 }
 
 
