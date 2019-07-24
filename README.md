@@ -1,5 +1,5 @@
 
-# Radio
+# Chair App
 
 A web app to chair Model United Nations conferences.
 
@@ -17,6 +17,6 @@ A web app to chair Model United Nations conferences.
         export const messagingSenderId= "stuffHere";
         export const appId= "stuffHere";
     ```
-3. This project is designed to use a Firebase Database. Either create your own project in Firebase or contact me for the keys.
+3. This project is designed to use a Firebase Database. Create your own project in Firebase to see it work!
 4. Run `npm install` for dependencies.
 5. Run `npm start`. The project will be hosted at `localhost:5000/`.
