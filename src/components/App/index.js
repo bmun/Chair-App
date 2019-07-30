@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Navigation from '../Navigation';
@@ -10,9 +10,7 @@ import HomePage from '../Home';
 import GradingPage from '../Grading';
 import AdminPage from '../Admin';
 import PostPage from '../Post';
-import { AuthUserContext } from '../Session';
 import * as ROUTES from '../../constants/routes';
-import { withFirebase } from '../Firebase';
 import WatchPage from "../Watch";
 import { withAuthentication } from '../Session';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';

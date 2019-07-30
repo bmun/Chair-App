@@ -3,14 +3,15 @@ import Select from 'react-select';
 import {withAuthorization} from "../Session";
 
 const INITIAL_STATE = {
-    options: [],
+    refreshed: false,
+    delList: [],
     choice: ""
-}
+};
 
 class GradingPage extends Component {
     constructor(props) {
         super(props);
-        this.state = {refreshed: false, delList: [], choice: ""};
+        this.state = {...INITIAL_STATE};
     }
 
     getOptions = () => {
@@ -25,9 +26,9 @@ class GradingPage extends Component {
 
     submitFeedback = () => {
         const {choice} = this.state
+        //TODO: Store Feedback in firebase
 
-
-    }
+    };
 
     render() {
         const {refreshed, delList, choice}  = this.state;

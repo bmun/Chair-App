@@ -7,7 +7,6 @@ import 'react-table/react-table.css'
 import './index.css'
 import {withAuthorization} from "../Session";
 import {SpeakingTimes, Times} from "../../constants/times";
-import Countdown from 'react-countdown-now';
 import {Motions} from "../../constants/motions";
 
 
@@ -160,7 +159,7 @@ class PostFormBase extends Component {
     };
 
     broadcastCaucus = event => {
-        const {content, type, topic, del, time, sp_time, data, error} = this.state;
+        const {type, topic, del, time, sp_time} = this.state;
         let that = [ ...this.state.data ];
         that.push({
             type: type,
@@ -241,7 +240,7 @@ class PostFormBase extends Component {
                         <div className="row">
                             <p>Speeches Remaining: {currentCaucus.rem} </p> &emsp;
                             <button onClick={this.takeSpeech}> Take Speech</button> &emsp;
-                            <Countdown date={Date.now() + timerVal}/>
+                            00:00:00
                         </div>
                         <p>Speaking Time: {currentCaucus.sp_time}</p>
                         <p>Total Time: {currentCaucus.time}</p>
@@ -284,7 +283,7 @@ class PostFormBase extends Component {
                     name="sp_time"
                     value={sp_time}
                     onChange={this.onChange}>
-                    {Object.keys(SpeakingTimes).map((key, index) => (<option value={key}key={key}>{key}</option>))}
+                    {Object.keys(SpeakingTimes).map((key, index) => (<option value={key} key={key}>{key}</option>))}
                 </select>
 
                 <button disabled={isInvalid2} type="submit"> Broadcast </button>

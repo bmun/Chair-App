@@ -52,7 +52,7 @@ class WatchBoxBase extends Component {
 
 
     initListener = () => {
-        const {content, caucus, channel, channelList, listening} = this.state;
+        const {channel} = this.state;
         const db = this.props.firebase.database;
         let that = this;
         this.setState({listening: true});
@@ -69,7 +69,7 @@ class WatchBoxBase extends Component {
                if (doc.exists) {
                    that.setState({caucus: doc.data()["table"]})
                }
-           })
+           });
 
         db.collection(channel).doc("currCaucus")
             .onSnapshot(function(doc) {
