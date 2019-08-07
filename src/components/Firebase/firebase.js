@@ -24,9 +24,8 @@ class Firebase {
         this.db = app.database();
     }
 
-    doCreateUserWithEmailAndPassword = (email, password) => {
-        let a = this.auth.createUserWithEmailAndPassword(email, password);
-        return a};
+    doCreateUserWithEmailAndPassword = (email, password) =>
+        this.auth.createUserWithEmailAndPassword(email, password);
 
     doSetUsername = (username) =>
         this.auth.currentUser.updateProfile({displayName: username});
@@ -58,7 +57,7 @@ class Firebase {
         });
 
     getTable = (committee, type) =>
-        this.database.collection(committee).doc(type).get()
+        this.database.collection(committee).doc(type).get();
 
 
 
@@ -74,7 +73,7 @@ class Firebase {
                 name: list[i]
             })
         }
-    }
+    };
 
     // *** Grading API
 

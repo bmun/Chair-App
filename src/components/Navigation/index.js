@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import '../Navigation/index.css'
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
@@ -9,7 +8,6 @@ import {Navbar, Nav} from "react-bootstrap";
 const Navigation = () => (
     <div>
         <header>
-            {/*<img src="https://cdn3.iconfinder.com/data/icons/eldorado-stroke-devices/40/radio-512.png"/>*/}
             <AuthUserContext.Consumer>
                 {authUser => {
                     return (authUser ? <NavigationAuth/> : <NavigationNonAuth/>);
@@ -64,6 +62,6 @@ const NavigationNonAuth = () => (
 );
 
 const condition = authUser => !!authUser;
-const NavigationAuth = withAuthorization(condition)(NavigationAuthBase)
+const NavigationAuth = withAuthorization(condition)(NavigationAuthBase);
 
 export default Navigation;

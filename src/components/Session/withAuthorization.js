@@ -36,7 +36,7 @@ const withAuthorization = condition => Component => {
         }
 
         render() {
-            const {username} = this.state
+            const {username} = this.state;
             return (
                 <AuthUserContext.Consumer>
                     {authUser => {
