@@ -1,0 +1,19 @@
+.box {
+    position: absolute;
+    margin-left: 20%;
+    margin-right: 20%;
+    height: auto;
+    z-index: 1;
+}
+
+.title {
+    font-weight: bold;
+}
+
+#close {
+    position: absolute;
+    margin-top: -4%;
+    margin-left:-3%;
+    font-weight: bold;
+    font-size: 120%;
+}

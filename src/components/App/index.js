@@ -8,6 +8,7 @@ import SignInPage from '../SignIn';
 import PasswordForgetPage from '../PasswordForget';
 import HomePage from '../Home';
 import GradingPage from '../Grading';
+import FeedbackView from '../Feedback';
 import AdminPage from '../Admin';
 import PostPage from '../Post';
 import * as ROUTES from '../../constants/routes';
@@ -38,6 +39,7 @@ const App = () => (
                         path={ROUTES.GRADING}
                         component={GradingPage}
                     />
+                    <Route exact path={ROUTES.FEEDBACK} component={FeedbackView}/>
                     <Route exact path={ROUTES.ADMIN} component={AdminPage} />
                     <Route exact path={ROUTES.POST} component={PostPage} />
                     <Route exact path={ROUTES.WATCH} component={WatchPage} />

@@ -78,12 +78,33 @@ class Firebase {
     // *** Grading API
 
     getDelegates = (committee) =>
-        this.database.collection(committee).doc("delegates").collection("delegates").get();
+        this.database.collection('committees').doc(committee).collection('delegates').get();
 
-    submitFeedback = (committee, delegate, feedback) => this.database.collection(committee).doc("delegates").collection("feedback").add({
-        delegate: delegate,
-        feedback: feedback
-    })
+    submitFeedback = (committee, delegate, comments, score) => {
+        this.database.collection('committees').doc(committee).collection('delegates').doc(delegate).collection('feedback').add({
+            comments: comments,
+            score: score,
+        });
+    }
+
+    getFeedback = async (committee) => {
+        const delegates = await this.getDelegates(committee);
+        const delegateList = delegates.docs.map(delegates => delegates.get("country"));
+        return await Promise.all(delegateList.map(async (delegate) => {
+            const feedbackDocs = await this.database
+                .collection('committees')
+                .doc(committee)
+                .collection('delegates')
+                .doc(delegate)
+                .collection('feedback')
+                .get();
+            const feedback = feedbackDocs.docs.map(feedback => feedback.data());
+            return {
+                country: delegate,
+                feedback: feedback,
+            }
+        }));
+    }
 }
 
 

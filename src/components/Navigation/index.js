@@ -30,6 +30,7 @@ class NavigationAuthBase extends Component {
                             <Nav.Link href={ROUTES.LANDING}>Landing</Nav.Link>
                             <Nav.Link href={ROUTES.HOME}>Home</Nav.Link>
                             <Nav.Link href={ROUTES.GRADING}>Grading</Nav.Link>
+                            <Nav.Link href={ROUTES.FEEDBACK}>Feedback</Nav.Link>
                             <Nav.Link href={ROUTES.POST}>Post</Nav.Link>
                             <Nav.Link href={ROUTES.WATCH}>Watch</Nav.Link>
                         </Nav>

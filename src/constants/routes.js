@@ -3,6 +3,7 @@ export const SIGN_IN = '/signin';
 export const LANDING = '/';
 export const HOME = '/home';
 export const GRADING = '/grading';
+export const FEEDBACK = '/feedback';
 export const ADMIN = '/admin';
 export const PASSWORD_FORGET = '/pw-forget';
 export const POST = '/post';
