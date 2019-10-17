@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
-import ReactTable from 'react-table'
-import 'react-table/react-table.css'
+// import 'react-table/react-table.css'
+import {SimpleTable, Styles} from '../../common/SimpleTable'
 import './index.css'
 import {withAuthorization} from "../Session";
 import {SpeakingTimes, Times} from "../../constants/times";
 import {Motions} from "../../constants/motions";
-
+import NewMotions from './NewMotions'
+import NewSpeaker from './NewSpeaker'
 
 const INITIAL_STATE = {
     content: '',
@@ -18,7 +19,7 @@ const INITIAL_STATE = {
     time: '1m',
     sp_time: '15s',
     data: [],
-    currentCaucus: {rem: 0},
+    currentCaucus: {rem: -1},
     timerVal: 0,
     error: null,
 };
@@ -30,7 +31,6 @@ const PostPage = () => (
         <PostForm />
     </div>
 );
-
 
 
 class PostFormBase extends Component {
@@ -52,8 +52,9 @@ class PostFormBase extends Component {
             {Header: "Speaking Time", accessor: "sp_time", sortMethod: (a, b) => SpeakingTimes[a] > SpeakingTimes[b]},
             {Header: "Utils", accessor: 'click', Cell: row => (
                     <div><button onClick={(e) => {
-                        let myRow = row["row"];
-                        thong.state.data.splice(myRow["_index"], 1);
+                      console.log(row)
+                        let myRow = row["row"]["original"];
+                        thong.state.data.splice(row["index"], 1);
                         let that = thong.state.data;
                         thong.setState({data: that});
                         thong.props.firebase
@@ -71,6 +72,7 @@ class PostFormBase extends Component {
                             rem: Times[myRow["time"]] / SpeakingTimes[myRow["sp_time"]],
                         };
                         thong.setState({currentCaucus: newCaucus});
+                        console.log(newCaucus)
                         thong.props.firebase
                             .setTable(thong.committee, "currCaucus", newCaucus)
                             .then(() => {thong.refreshData("nice")})
@@ -129,7 +131,6 @@ class PostFormBase extends Component {
                 this.setState({error})
             });
 
-        this.setState(...INITIAL_STATE);
     };
 
     refreshData = event => {
@@ -157,9 +158,20 @@ class PostFormBase extends Component {
                 }
             });
     };
+    broadcast_helper = (event, typ, topi, de, tim, sp_tim) => {
+      this.setState({
+        type: typ,
+        topic: topi,
+        del: de,
+        time: tim,
+        sp_time: sp_tim
+      })
+      this.broadcastCaucus(event);
+      event.preventDefault();
+    }
 
-    broadcastCaucus = event => {
-        const {type, topic, del, time, sp_time} = this.state;
+    broadcastCaucus = (event, type, topic, del, time, sp_time) => {
+        // const {type, topic, del, time, sp_time} = this.state;
         let that = [ ...this.state.data ];
         that.push({
             type: type,
@@ -215,95 +227,97 @@ class PostFormBase extends Component {
         }
     };
 
+    addSpeaker = (event, speaker) => {
+      let data = []
+      let fb = this.props.firebase;
+      let comm = this.committee
+      fb.getTable(comm, "speakerList")
+      .then(function(doc) {
+          let data = []
+          if (doc.exists) {
+              data = doc.data()["table"]
+          }
+          data.push(speaker)
+          fb.setTable(comm, "speakerList", data)
+      })
+      event.preventDefault()
+    }
+
     render() {
         const {content, type, topic, del, time, sp_time, data, currentCaucus, timerVal, error} = this.state;
         const isInvalid2 = topic === '' || del === '' || time === '' || sp_time === '';
         return (
-            <div className="container-fluid">
-                {error && <p>{error}</p>}
-                <div className="row">
-                    <div className="col-md-6">
-                        <form onSubmit={this.onSubmit}>
-                            <textarea name="content"
-                                   value={content}
-                                   onChange={this.onChange}
-                                   placeholder="StuffHere"
-                                      className="form-controlq"
-                                   />
-                            <button type="submit">
-                                Post
-                            </button>
-                        </form>
-                    </div>
-                    <div className="col-md-6">
-                        <h4>Current Caucus:</h4>
-                        <div className="row">
-                            <p>Speeches Remaining: {currentCaucus.rem} </p> &emsp;
-                            <button onClick={this.takeSpeech}> Take Speech</button> &emsp;
-                            00:00:00
-                        </div>
-                        <p>Speaking Time: {currentCaucus.sp_time}</p>
-                        <p>Total Time: {currentCaucus.time}</p>
-                        <p> Type: {currentCaucus.type} </p>
-                        <p>Topic: {currentCaucus.topic}</p>
-                        <p>Delegate: {currentCaucus.del}</p>
-                    </div>
-                </div>
-                <br/>
-                <div className="row">
-            <form onSubmit={this.broadcastCaucus}>
-                <select name="type" value={type} onChange={this.onChange}>
-                    <option value="Moderated">Mod</option>
-                    <option value="Unmoderated">Unmod</option>
-                    <option value="Formal">Formal</option>
-                </select>
-                <input
-                    name="topic"
-                    value={topic}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Topic"/>
-
-                <input
-                    name="del"
-                    value={del}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Delegate"/>
-
-                <select
-                    name="time"
-                    value={time}
-                    onChange={this.onChange}>
-
-                    {Object.keys(Times).map((key, index) => (<option value={key} key={key}>{key}</option>))}
-                </select>
-
-                <select
-                    name="sp_time"
-                    value={sp_time}
-                    onChange={this.onChange}>
-                    {Object.keys(SpeakingTimes).map((key, index) => (<option value={key} key={key}>{key}</option>))}
-                </select>
-
-                <button disabled={isInvalid2} type="submit"> Broadcast </button>
-            </form>
-                </div>
-                    <br/>
-                <div className="row">
-
-                <ReactTable data={data}
-                        columns={this.caucusCols}
-                        showPageSizeOptions={false}
-                        defaultPageSize={5}
-                        showPageJump={false}
-                        sortable={false}
-                        multiSort={false}
-                        resizable={false}/>
-                <button onClick={this.clearCaucus}> Clear Caucus </button>
-                <button onClick={this.refreshData}> Refresh Local Screen </button>
-            </div>
-            </div>
+          <div>
+          {currentCaucus.rem < 0 && <div className="container-fluid">
+          	<div className="row">
+          		<div className="col-md-6">
+                <Styles>
+                  <SimpleTable data={data}
+                          columns={this.caucusCols}/>
+                </Styles>
+          		</div>
+          		<div className="col-md-6">
+                <NewMotions broadcast={this.broadcastCaucus}/>
+                <NewSpeaker addSpeaker={this.addSpeaker}/>
+          		</div>
+              <button onClick={this.clearCaucus}> Clear Caucus </button>
+              <button onClick={this.refreshData}> Refresh Screen </button>
+              <button> Suspend Debate </button>
+          	</div>
+          </div>}
+            {currentCaucus.rem >= 0 && <div className="container-fluid">
+            	<div className="row">
+            		<div className="col-md-7">
+                <input placeholder={"Filter"}/>
+                <Styles>
+                <SimpleTable
+                data={Array(7).fill({delegate: "Russia", times_spoken: "0"})}
+                columns={[
+                  {Header: "Delegate", accessor: "delegate"},
+                  {Header: "Times Spoken", accessor: "times_spoken"}
+                ]}/>
+                </Styles>
+                <button> Suspend Debate </button>
+            		</div>
+            		<div className="col-md-5">
+            			<div className="row">
+            				<div className="col-md-12">
+            					<div className="row">
+            						<div className="col-md-6">
+                          <h2> 00:43 </h2>
+                          <h3> Libya </h3>
+                          <h5> Speeches Remaining: {currentCaucus.rem}</h5>
+                          <h5> Speaking Time: {currentCaucus.sp_time}</h5>
+                          <h5> Total Time: {currentCaucus.time}</h5>
+            						</div>
+            						<div className="col-md-6">
+                        {currentCaucus.rem > 0 && <button onClick={this.takeSpeech}> Next Speaker </button>}
+                        {currentCaucus.rem == 0 && <button onClick={()=>{
+                          currentCaucus.rem = -1;
+                          this.setState({currentCaucus});
+                          this.props.firebase
+                              .setTable(this.committee, "currCaucus", currentCaucus);
+                          }
+                        }> End Caucus </button>}
+                          <button> Start Timer</button>
+                          <button> Stop Timer </button>
+            						</div>
+            					</div>
+            				</div>
+            			</div>
+            			<div className="row">
+            				<div className="col-md-12">
+                      <Styles>
+                        <SimpleTable
+                        data={Array(7).fill({delegate: "Russia"})}
+                        columns={[{Header:"Delegation", accessor: "delegate"}]}/>
+                      </Styles>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            </div>}
+          </div>
         );
     }
 }

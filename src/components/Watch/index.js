@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
-import ReactTable from 'react-table'
-import 'react-table/react-table.css'
+import {SimpleTable, Styles} from '../../common/SimpleTable'
 import './index.css'
 import ReactMarkdown from 'react-markdown'
 import CaucusView from "../Post/caucus";
@@ -90,11 +89,10 @@ class WatchBoxBase extends Component {
         return (
             <div>
                 {listening && <div><ReactMarkdown source={content} />
-                <ReactTable data={caucus}
-                            columns={caucusCols}
-                            showPageSizeOptions={false}
-                            defaultPageSize={5}
-                            showPageJump={false}/>
+                <Styles>
+                <SimpleTable data={caucus}
+                            columns={caucusCols}/>
+                </Styles>
                 <CaucusView caucus={currCaucus}/>
                 </div>}
                 {!listening && <div>
