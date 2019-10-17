@@ -8,6 +8,7 @@ const SpeakingTimes = {
 
 const Times = {
     "1m" : 60,
+    "1m30s": 90,
     "2m" : 120,
     "3m" : 180,
     "4m" : 240,

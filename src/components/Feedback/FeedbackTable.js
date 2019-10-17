@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import ReactTable from 'react-table';
+import {SimpleTable, Styles} from '../../common/SimpleTable'
 import ModalBox from './ModalBox';
-import 'react-table/react-table.css';
 import './styles.css';
 
 class FeedbackTable extends Component {
@@ -35,17 +34,18 @@ class FeedbackTable extends Component {
                 feedback: f['feedback'] ? f['feedback'][0]['comments'] : '',
             };
         });
-    
-        return <div>
-            {this.state.displayModal && this.state.feedbackData ? 
-                <ModalBox 
+
+        return (<div>
+            {this.state.displayModal && this.state.feedbackData ?
+                <ModalBox
                     feedback={this.state.feedbackData}
                     onClose={this.hideModalBox}
-                /> 
+                />
                 : null
             }
-            <ReactTable 
-                columns={columns} 
+            <Styles>
+            <SimpleTable
+                columns={columns}
                 data={tableData}
                 getTdProps={(state, rowInfo, column, instance) => {
                     return {
@@ -58,10 +58,10 @@ class FeedbackTable extends Component {
                                 }
                                 const feedbackData = filteredFeedback[0];
                                 console.log(feedbackData);
-                
+
                                 this.setState({feedbackData: feedbackData});
                                 this.displayModalBox();
-        
+
                                 if (handleOriginal) {
                                     handleOriginal()
                                 }
@@ -72,7 +72,8 @@ class FeedbackTable extends Component {
                     }
                 }}
             />
-        </div>
+            </Styles>
+        </div>)
     }
 }
 
